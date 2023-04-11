@@ -6,7 +6,7 @@ public class GameInstaller : MonoInstaller
     {
         Container
             .Bind<IInitializable>()
-            .To<GameService>()
+            .To<GameNetworkService>()
             .AsSingle()
             .NonLazy();
     }

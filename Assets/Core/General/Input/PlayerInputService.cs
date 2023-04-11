@@ -1,10 +1,11 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Zenject;
 
-namespace App.Input
+namespace App.PlayerInput
 {
-    public class PlayerInputService
+    public class PlayerInputService : ITickable
     {
         public PlayerInputService(PlayerService playerService)
         {
@@ -12,11 +13,10 @@ namespace App.Input
         }
 
         private Vector2 _direction;
+        private Vector2 _playerMoveDirection;
 
-        #region Dependencies
         private PlayerInputView _view;
         private PlayerService _playerService;
-        #endregion
 
         public void SetView(PlayerInputView playerInputView)
         {
@@ -26,6 +26,7 @@ namespace App.Input
         public void ResetDirection()
         {
             _direction = Vector2.zero;
+            _playerMoveDirection = Vector2.zero;
         }
 
         public void OnDragHandle(PointerEventData pointerEventData,
@@ -56,12 +57,34 @@ namespace App.Input
                     ? _direction.normalized
                     : _direction;
 
-                Vector3 joystickPosition = new Vector3(_direction.x * (background.sizeDelta.x / 3),
-                                                       _direction.y * (background.sizeDelta.y / 3));
+                _playerMoveDirection = new Vector3(_direction.x * (background.sizeDelta.x / 3),
+                                                   _direction.y * (background.sizeDelta.y / 3));
 
-                _view.SetJoystickPosition(joystickPosition);
-                _playerService.Move(joystickPosition);
+                _view.SetJoystickPosition(_playerMoveDirection);
             }
+        }
+
+        public void Tick()
+        {
+            _playerService.Move(_playerMoveDirection);
+
+#if UNITY_EDITOR
+            if (Input.GetMouseButtonDown(1))
+            {
+                _playerService.Shoot();
+            }
+#else
+            if (Input.touchCount > 0)
+            {
+                Touch touch = Input.GetTouch(0);
+
+                if (touch.phase == TouchPhase.Began)
+                {
+                    _playerService.Shoot();
+                }
+            }
+        }
+#endif
         }
     }
 }

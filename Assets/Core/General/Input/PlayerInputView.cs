@@ -2,7 +2,7 @@ using UnityEngine;
 using Zenject;
 using UnityEngine.EventSystems;
 
-namespace App.Input
+namespace App.PlayerInput
 {
     public class PlayerInputView : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDownHandler
     {

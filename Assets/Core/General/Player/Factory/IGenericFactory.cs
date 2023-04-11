@@ -1,7 +1,9 @@
+using UnityEngine;
+
 namespace App
 {
     public interface IGenericFactory<T>
     {
-        T Spawn();
+        T Spawn(Vector2 position, Quaternion rotation);
     }
 }

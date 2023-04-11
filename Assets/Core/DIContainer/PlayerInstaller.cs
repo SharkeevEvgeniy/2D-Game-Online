@@ -1,5 +1,6 @@
 using Zenject;
 using App.Network;
+using App;
 
 public class PlayerInstaller : MonoInstaller
 {

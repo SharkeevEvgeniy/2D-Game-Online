@@ -1,10 +1,10 @@
 using Zenject;
-using App.Input;
+using App.PlayerInput;
 
 public class PlayerInputInstaller : MonoInstaller
 {
     public override void InstallBindings()
     {
-        Container.Bind<PlayerInputService>().AsSingle();
+        Container.BindInterfacesAndSelfTo<PlayerInputService>().AsSingle().NonLazy();
     }
 }
