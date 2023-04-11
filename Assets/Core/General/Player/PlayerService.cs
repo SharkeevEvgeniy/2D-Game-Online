@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class PlayerService : ITickable
+public class PlayerService
 {
-    public void Tick()
+    private PlayerView _playerView;
+
+    public void SetPlayerView(PlayerView playerView)
     {
-        throw new System.NotImplementedException();
+        _playerView = playerView;
     }
 
-    
-    void Start()
+    public void Move(Vector2 direction)
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Shoot()
     {
-        
+
     }
 }

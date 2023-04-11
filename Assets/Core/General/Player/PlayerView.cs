@@ -1,29 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Photon.Pun;
+using UnityEngine;
+using Zenject;
 
 [RequireComponent(typeof(PhotonView))]
 public class PlayerView : MonoBehaviour
 {
     private PhotonView _photonView;
 
+    private PlayerService _playerService;
+
+    [Inject]
+    private void Construct(PlayerService playerService)
+    {
+        _playerService = playerService;
+    }
+
     private void Awake()
     {
         _photonView = GetComponent<PhotonView>();
     }
 
-
-    void Update()
+    private void Start()
     {
-        //if (!_photonView.IsMine)
-        //    return;
+        if (_photonView.IsMine)
+            _playerService.SetPlayerView(this);
+    }
 
-        float h = Input.GetAxis("Horizontal");
-        float y = Input.GetAxis("Vertical");
+    public void Move(Vector2 direction)
+    {
+        transform.Translate(direction);
+    }
 
-        Debug.LogError($"{h} /// {y}");
-
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
 
     }
 }
